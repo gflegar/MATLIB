@@ -19,8 +19,6 @@ public:
 
     E& operator ()(int row, int col) { return data_.get(row, col); }
     E operator ()(int row, int col) const { return data_.get(row, col); }
-    E& operator ()(int element) { return data_.get(element); }
-    E operator ()(int element) const { return data_.get(element); }
 
 private:
     Repr<E> data_;
@@ -28,26 +26,24 @@ private:
 
 
 template <typename E>
-class ColumnMajorRepr {
+class ColumnMajorRepresentation {
 public:
-    ColumnMajorRepr(int rows, int cols)
-            : rows_(rows), cols_(cols), data_(rows, cols) {}
+    ColumnMajorRepresentation(int rows, int cols)
+            : rows_(rows), cols_(cols), data_(rows*cols, E(0)) {}
 
     int rows() const { return rows_; }
     int cols() const { return cols_; }
     E& get(int row, int col) { return data_[row + col*rows_]; }
     E get(int row, int col) const { return data_[row + col*rows_]; }
-    E& get(int element) { return data_[element]; }
-    E get(int element) const { return data_[element]; }
 
 private:
-    int rows_;
-    int cols_;
+    const int rows_;
+    const int cols_;
     std::vector<E> data_;
 };
 
 
-}  // matlib
+}  // namespace matlib
 
 
 #endif  // MATLIB_INCLUDE_MATLIB_MATRIX_H_
